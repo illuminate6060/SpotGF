@@ -182,7 +182,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='calculate ot')
     parser.add_argument('-i', '--arg1', type=str, help='input gem file path') 
     parser.add_argument('-b', '--arg2', type=int, help='binsize')
-    parser.add_argument('-o', '--arg3', type=float, help='proportion save genes')
+    parser.add_argument('-p', '--arg3', type=float, help='proportion save genes')
     args = parser.parse_args()
 
     gem_path = args.arg1
