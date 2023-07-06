@@ -1,0 +1,7 @@
+numpy
+pot==0.8.2
+pandas
+matplotlib
+scipy
+descartes
+argparse
