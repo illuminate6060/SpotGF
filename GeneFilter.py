@@ -21,9 +21,7 @@ class GeneFilter():
         self.gem_path = gem_path
         self.binsize = binsize
         self.proportion = proportion
-        # self.outpath = outpath
-        # print(gem_path,outpath,binsize)
-    
+
     def convert_x_y_to_numeric(self,df):
         df['x'] = pd.to_numeric(df['x'])
         df['x'] = df['x'].astype(np.int64)
@@ -39,7 +37,7 @@ class GeneFilter():
     def open_gem(self,gem_path):
         with open(gem_path, 'r') as file:
             sample_data = file.read(1024)
-        dialect = csv.Sniffer().sniff(sample_data) # 自动检测分隔符
+        dialect = csv.Sniffer().sniff(sample_data)
         if gem_path.endswith('.gz'):
             ex_raw = pd.read_csv(gem_path, delimiter=dialect.delimiter, compression= 'gzip' )
         else:
@@ -78,12 +76,10 @@ class GeneFilter():
         # print(min_x, min_y ,max_x, max_y)
         # print(width,height)
 
-        # 2.计算每个单元格的宽度和高度，获取binsize
         # bin_size = math.sqrt((width * height) / num_points)
-        bin_size = math.sqrt(mask_area / num_points)   #binsize的大小
+        bin_size = math.sqrt(mask_area / num_points)   
         # print("bin_size",bin_size)
         
-        # 3.构建网格分布并将输入数据点分配到输出网格中的单元格
         cols = ((points[:, 0] - min_x) / bin_size).astype(int)
         rows = ((points[:, 1] - min_y) / bin_size).astype(int)
         grid = np.zeros((rows.max()+1 , cols.max()+1), dtype=int) 
@@ -91,19 +87,18 @@ class GeneFilter():
         for col, row in zip(cols, rows):
             grid[row, col] += 1
 
-        # 4.从输出网格中选择点
         output_points = []
         tolerance = 1e-12
         for row in range(rows.max()+1):
             for col in range(cols.max()+1):
-                if grid[row, col] > 0:     #筛选有表达量的点
+                if grid[row, col] > 0:   
                     # print(grid[row, col])
                     x = (col + 0.1) * bin_size + min_x
                     y = (row + 0.1) * bin_size + min_y
                     all((np.dot(eq[:-1], (x,y)) + eq[-1] <= tolerance)
                         for eq in hull.equations)
                     # if  self.point_in_hull((x,y),hull):
-                    # if alpha_shape.contains(Point(x,y)):  #筛选在组织内的点
+                    # if alpha_shape.contains(Point(x,y)): 
                     output_points.append([x, y])
         output_points = np.array(output_points)
         return output_points
@@ -183,20 +178,18 @@ class GeneFilter():
         return ex_new
 
 
-# if __name__ == '__main__':
-# #     # parser = argparse.ArgumentParser(description='calculate ot')
-# #     # parser.add_argument('-i', '--arg1', type=str, help='input gem file path')
-# #     # parser.add_argument('-o', '--arg2', type=str, help='output txt path')
-# #     # parser.add_argument('-b', '--arg3', type=int, help='binsize')
-# #     # args = parser.parse_args()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='calculate ot')
+    parser.add_argument('-i', '--arg1', type=str, help='input gem file path') 
+    parser.add_argument('-b', '--arg2', type=int, help='binsize')
+    parser.add_argument('-o', '--arg3', type=float, help='proportion save genes')
+    args = parser.parse_args()
 
-# #     # gem_path = args.arg1
-# #     # binsize = args.arg2
-# #     # outpath = args.arg3
-#     gem_path = '/data/public/dulin/python_code/17.new_emd/new-arbi-4.23/data/small-image/small-image/arbi-image1-cellbin.gem'
-#     binsize = 100
-#     proportion = 0.1
+    gem_path = args.arg1
+    binsize = args.arg2
+    proportion = args.arg3
 
-#     GF = GeneFilter(gem_path,binsize,proportion)
-#     result = GF.calculate_GFscore(gem_path,binsize)
-#     new_gem  = GF.generate_GFgem(gem_path,result,proportion)
+    GF = GeneFilter(gem_path,binsize,proportion)
+    result = GF.calculate_GFscore(gem_path,binsize)
+    new_gem  = GF.generate_GFgem(gem_path,result,proportion)
+    new_gem.to_csv('./new_gem.gem',sep='\t')
