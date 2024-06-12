@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: GeneFilter
+Version: 1.0
+Summary: GF for de-noising spatially resolved transcriptomics data based on optimal transport theory
+Author: Lin Du
+Author-email: 3051065449@qq.com
+License: MIT
+Requires-Python: >=3
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pot==0.8.2
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: descartes
+Requires-Dist: alphashape
+Requires-Dist: shapely

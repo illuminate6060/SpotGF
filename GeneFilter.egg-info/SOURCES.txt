@@ -1,0 +1,7 @@
+LICENSE
+setup.py
+GeneFilter.egg-info/PKG-INFO
+GeneFilter.egg-info/SOURCES.txt
+GeneFilter.egg-info/dependency_links.txt
+GeneFilter.egg-info/requires.txt
+GeneFilter.egg-info/top_level.txt
