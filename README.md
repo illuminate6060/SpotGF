@@ -13,18 +13,18 @@ conda install python=3.7 pandas pot=0.8.2 numpy scipy matplotlib descartes
 Then, download this repo and install it.
 ```
 git clone [repo_path]
-cd [path/to/sprod]
+cd [path/to/GeneFilter-main]
 pip install .
 ```
 
-The total installation time is around 10 mintunes. If error occuors, please upgrade pip and try again.
+The total installation time is around 2 mintunes. If error occuors, please upgrade pip and try again.
 
 
 ## Usage
 Once the input data have been processed into the supported format, the full sprod workflow can be run by calling the `GenenFilter.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time. The `proportion` parameter determines the proportion of genes to be retained in the final denoised data. For example, setting proportion=0.9 will retain only 90% of the effective genes, resulting in a new denoised SRT dataset. If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 ```
-python [path/to/GenenFilter.py] [path/to/input.gem] [binsize] [proportion]
+python [path/to/GenenFilter.py] [path/to/input.gem] [binsize] [proportion] [auto_threshold] [lower] [upper] [max_iterations] 
 ```
 
 If you use GeneFilter in Jupyter environment, you can choose blow Usage.
