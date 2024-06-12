@@ -1,5 +1,5 @@
 # GeneFilter
-Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
+GF for de-noising spatially resolved transcriptomics data based on optimal transport theory
 
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
@@ -24,8 +24,12 @@ The total installation time is around 2 mintunes. If error occuors, please upgra
 Once the input data have been processed into the supported format, the full sprod workflow can be run by calling the `GenenFilter.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time. The `proportion` parameter determines the proportion of genes to be retained in the final denoised data. For example, setting proportion=0.9 will retain only 90% of the effective genes, resulting in a new denoised SRT dataset.Set the auto_threshold parameter to True, GF will automatically generate a threshold based on the distribution of GF scores and save the denoised file. If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 **Method 1**
+If you want to run the '.py' file directly
 ```
 python [path/to/GenenFilter.py] [path/to/input.gem] [binsize] [proportion] [auto_threshold] [lower] [upper] [max_iterations] 
+
+Here is a simple running example
+python path/to/GenenFilter.py -i ../arbi-image1-cellbin.gem -b 10 -auto_threshold True
 ```
 
 **Method 2**
