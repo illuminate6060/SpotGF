@@ -94,4 +94,4 @@ positional arguments:
 ### Contact Us
 If you have any suggestions/ideas for GeneFilter or are having issues trying to use it, please don't hesitate to reach out to us.
 
-Lin Du, dulin[dot]@genomics[dot]cn 
+Lin Du, dulin.@genomics.cn / 3051095449@qq.com
