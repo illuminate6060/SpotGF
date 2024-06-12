@@ -89,10 +89,7 @@ positional arguments:
   p            type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5
 
   auto_threshold            type=bool, help='Whether generate GF-denoised data based on automatic threshold', default=True
-
-
-
-
+```
 
 ### Contact Us
 If you have any suggestions/ideas for GeneFilter or are having issues trying to use it, please don't hesitate to reach out to us.
