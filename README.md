@@ -91,6 +91,9 @@ positional arguments:
   auto_threshold            type=bool, help='Whether generate GF-denoised data based on automatic threshold', default=True
 ```
 
+### suggestions 
+It is worth noting that since the genes maintained after GF denoising are "valid" genes, which contain spatial clustering information, users may skip the step of identifying highly variable genes (HVGs) when using GF-denoised data for clustering. For example, skip the "scanpy.pp.highly_variable_genes" step in Scanpy. Users may also adjust the number of HVGs to a minimum of 3,000. If the number of genes maintained  by the user is too small (less than 2,000), we strongly recommend using all the genes retained for clustering analysis.
+
 ### Contact Us
 If you have any suggestions/ideas for GeneFilter or are having issues trying to use it, please don't hesitate to reach out to us.
 
