@@ -1,4 +1,4 @@
-![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/ae91df71-691c-457c-8cc0-e37d6bf50908)# SpotGF
+# SpotGF
 SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
 https://doi.org/10.1016/j.cels.2024.09.005
 
