@@ -5,4 +5,4 @@ import urllib
 import sys
 import os
 
-__all__=["GeneFilter"]
+__all__=["SpotGF"]

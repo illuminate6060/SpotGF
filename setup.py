@@ -12,13 +12,13 @@ requires = ['numpy',
             ]
 
 setup(
-      name='GeneFilter', 
+      name='SpotGF', 
       version='1.0', 
       author='Lin Du',
       author_email='3051065449@qq.com',
       license="MIT",
-      description="GF for de-noising spatially resolved transcriptomics data based on optimal transport theory",
-      # long_description=open('README').read(),
+      description="SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm",
+      long_description=open('README.md').read(),
       packages=find_packages(), 
       install_requires = requires,
       python_requires = '>=3'

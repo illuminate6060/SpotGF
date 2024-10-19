@@ -1,56 +1,68 @@
-# GeneFilter
-GF for de-noising spatially resolved transcriptomics data based on optimal transport theory
+# SpotGF
+SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
+https://doi.org/10.1016/j.cels.2024.09.005
+
+preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
 
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
 
 ```
-conda create --name GF
-conda activate GF
+conda create --name SpotGF
+conda activate SpotGF
 # conda config --add channels conda-forge ##If you do not have this channel added before#
 conda install python=3.7 pandas pot=0.8.2 numpy scipy matplotlib descartes
 ```
 Then, download this repo and install it.
 ```
 git clone [repo_path]
-cd [path/to/GeneFilter-main]
+cd [path/to/sprod]
 pip install .
 ```
 
-The total installation time is around 2 mintunes. If error occuors, please upgrade pip and try again.
+The total installation time is around 10 mintunes. If error occuors, please upgrade pip and try again.
 
 
 ## Usage
-Once the input data have been processed into the supported format, the full sprod workflow can be run by calling the `GenenFilter.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time. The `proportion` parameter determines the proportion of genes to be retained in the final denoised data. For example, setting proportion=0.9 will retain only 90% of the effective genes, resulting in a new denoised SRT dataset.Set the auto_threshold parameter to True, GF will automatically generate a threshold based on the distribution of GF scores and save the denoised file. If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
+Once the input data have been processed into the supported format, the full SpotGF workflow can be run by calling the `SpotGF.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, `gem.gz`and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. 
 
-**Method 1**
-If you want to run the '.py' file directly
-```
-python [path/to/GenenFilter.py] [path/to/input.gem] [binsize] [proportion] [auto_threshold] [lower] [upper] [max_iterations] 
+The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time.Please note that the `binsize` parameter is only used when calculating SpotGF scores and it does not affect the final denoised data.
 
-Here is a simple running example
-python path/to/GenenFilter.py -i ../arbi-image1-cellbin.gem -b 10 -auto_threshold True
-```
+The `proportion` parameter determines the proportion of genes to be retained in the final denoised data. For example, setting proportion=0.9 will retain only 90% of the effective genes, resulting in a new denoised SRT dataset. 
 
-**Method 2**
-If you use GeneFilter in Jupyter environment, you can choose blow Usage.
+If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 ```
-import GeneFilter as GF
+python [path/to/SpotGF.py] [path/to/input.gem] [binsize] [proportion]
+```
 
-gem_path = '../arbi-image1-cellbin.gem' 
-binsize = 5
-proportion = 0.6
+If you use SpotGF in Jupyter environment, you can choose blow Usage.
+
+```
+from SpotGF import SpotGF	
+
+gem_path = './SpotGF/test/demo.gem' 
+output = "./SpotGF/test"
+binsize =75
+lower= 0
+upper = 100000
+proportion  = 0.1
+max_iterations = 10000
 auto_threshold = True
 
-GF = GF.GeneFilter(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations) #initial class
-GF_df = GF.calculate_GFscore(gem_path,binsize)#acquire GF socres distribution figure to help choose proportion parameter
-new_gem  = GF.generate_GFgem(gem_path,GF_df,proportion,auto_threshold ) #denoised SRT data
+#initial class
+spotgf = SpotGF.SpotGF(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,output)
+
+#acquire SpotGF socres distribution figure to help choose proportion 
+GF_df = spotgf.calculate_GFscore(gem_path,binsize)
+
+#denoised SRT data
+new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold)
 ```
 
 
 ### Data preparation
-Sprod workflow requires two mandatory files, a `input.gem` (with "\t" as the delimiter) for gene expression data,
+Sprod workflow requires two mandatory files, a `input.gem` (with "\t" or "," as the delimiter) for gene expression data,
 
 |geneID|x|y|MIDCount|
 |-----|-----|-----|-----|
@@ -58,43 +70,39 @@ Sprod workflow requires two mandatory files, a `input.gem` (with "\t" as the del
 |#gene1|24|35|1|
 |#gene1|23|30|1|
 |#gene2|20|31|1|
-|#...|...|...|...|
 |#gene2|21|22|1|
 
 
 ### Output files
-**GF_scores.txt**: This file contains the GF scores for each gene. The GF score indicates the degree of clustering or diffusion of a gene. A smaller GF score suggests that the gene is more diffuse, while a larger GF score indicates that the gene is more clustered.
-
-**GF_auto_threshold.gem**: Find the reference threshold according to the automatic threshold method, and generate the gem file after denoising
-
-**GF_proportion.gem**: The gem file generated after denoising according to the custom retained gene ratio
+SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
 
 
 ### List of Parameters
 ```
 positional arguments:
 
-  i            type=str, help='input gem file path'
-  
-  b            type=int, help='Denoising resolution binsize', default = 5
+  i            Input SRT data files path.
 
-  lower            type=float, help='lower limit for tissue structures capturing optimization', default = 0
+  o            Outpath for saving results.
+    
+  b            Denoising resolution binsize, must int type, default=5.
 
-  lower            type=float, help='lower limit for tissue structures capturing optimization', default = 0
+  lower            Lower limit for tissue structures capturing optimization, default=0.
 
-  upper            type=float, help='upper limit for tissue structures capturing optimization', default=sys.float_info.max
+  upper            Upper limit for tissue structures capturing optimization', default=sys.float_info.max.
 
-  max_iterations            type=int, help='maximum number of iterations when capturing tissue structures', default== 10000
+  max_iterations            maximum number of iterations when capturing tissue structures', default=10000.
 
-  p            type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5
+  p            Proportion of gene numbers, must float type [0,1], default=0.6.
 
-  auto_threshold            type=bool, help='Whether generate GF-denoised data based on automatic threshold', default=True
-```
+  auto_threshold            if True, return a denoised gem file using automatic threshold, default=True.
 
-### suggestions 
-It is worth noting that since the genes maintained after GF denoising are "valid" genes, which contain spatial clustering information, users may skip the step of identifying highly variable genes (HVGs) when using GF-denoised data for clustering. For example, skip the "scanpy.pp.highly_variable_genes" step in Scanpy. Users may also adjust the number of HVGs to a minimum of 3,000. If the number of genes maintained  by the user is too small (less than 2,000), we strongly recommend using all the genes retained for clustering analysis.
 
 ### Contact Us
-If you have any suggestions/ideas for GeneFilter or are having issues trying to use it, please don't hesitate to reach out to us.
+If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
 
-Lin Du, dulin.@genomics.cn / 3051095449@qq.com
+Lin Du, dulin[dot]@genomics[dot]cn 
+
+
+##Cite
+Du, L., Kang, J., Hou, Y., Sun, H. X., & Zhang, B. (2024). SpotGF: Denoising spatially resolved transcriptomics data using an optimal transport-based gene filtering algorithm. Cell systems, 15(10), 969–981.e6. https://doi.org/10.1016/j.cels.2024.09.005
