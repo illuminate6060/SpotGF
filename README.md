@@ -1,9 +1,12 @@
-# SpotGF
+![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/ae91df71-691c-457c-8cc0-e37d6bf50908)# SpotGF
 SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
 https://doi.org/10.1016/j.cels.2024.09.005
 
 Preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
-![Uploading GRAPHICAL ABSTRACT_revised.png…]()
+
+![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/7e459d79-78dd-4036-8dc4-4389214b46c4)
+
+
 
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
