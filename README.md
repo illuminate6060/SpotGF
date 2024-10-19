@@ -2,7 +2,8 @@
 SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
 https://doi.org/10.1016/j.cels.2024.09.005
 
-preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
+Preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
+![Uploading GRAPHICAL ABSTRACT_revised.png…]()
 
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
