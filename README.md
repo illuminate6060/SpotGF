@@ -104,5 +104,5 @@ If you have any suggestions/ideas for SpotGF or are having issues trying to use 
 Lin Du, dulin[dot]@genomics[dot]cn 
 
 
-##Cite
+### Cite
 Du, L., Kang, J., Hou, Y., Sun, H. X., & Zhang, B. (2024). SpotGF: Denoising spatially resolved transcriptomics data using an optimal transport-based gene filtering algorithm. Cell systems, 15(10), 969–981.e6. https://doi.org/10.1016/j.cels.2024.09.005
