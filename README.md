@@ -96,7 +96,7 @@ positional arguments:
   p            Proportion of gene numbers, must float type [0,1], default=0.6.
 
   auto_threshold            if True, return a denoised gem file using automatic threshold, default=True.
-
+```
 
 ### Contact Us
 If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
