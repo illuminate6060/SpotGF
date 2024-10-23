@@ -4,7 +4,7 @@ https://doi.org/10.1016/j.cels.2024.09.005
 
 Preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
 
-![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/7e459d79-78dd-4036-8dc4-4389214b46c4)
+![Uploading GRAPHICAL ABSTRACT_revised.png…]()
 
 
 
