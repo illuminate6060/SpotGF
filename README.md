@@ -21,7 +21,7 @@ conda install python=3.7 pandas pot=0.8.2 numpy scipy matplotlib descartes
 Then, download this repo and install it.
 ```
 git clone [repo_path]
-cd [path/to/sprod]
+cd [path/to/SpotGF-main]
 pip install .
 ```
 
