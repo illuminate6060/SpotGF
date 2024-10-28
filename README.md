@@ -77,6 +77,7 @@ Sprod workflow requires two mandatory files, a `input.gem` (with "\t" or "," as 
 |#gene2|20|31|1|
 |#gene2|21|22|1|
 
+I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change
 
 ### Output files
 SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
