@@ -28,6 +28,24 @@ pip install .
 The total installation time is around 10 mintunes. If error occuors, please upgrade pip and try again.
 
 
+### Data preparation
+The SpotGF workflow requires only one mandatory file for the expression and position of each gene of the user's SRT data, namely `input.gem` (with "\t" or "," as delimiters).
+I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change.
+A simple example is shown below:
+
+|geneID|x|y|MIDCount|
+|-----|-----|-----|-----|
+|#gene1|23|36|1|
+|#gene1|24|35|1|
+|#gene1|23|30|1|
+|#gene2|20|31|1|
+|#gene2|21|22|1|
+
+
+### Output files
+SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
+
+
 ## Usage
 Once the input data have been processed into the supported format, the full SpotGF workflow can be run by calling the `SpotGF.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, `gem.gz`and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. 
 
@@ -64,24 +82,6 @@ GF_df = spotgf.calculate_GFscore(gem_path,binsize)
 #denoised SRT data
 new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold)
 ```
-
-
-### Data preparation
-The SpotGF workflow requires only one mandatory file for the expression and position of each gene of the user's SRT data, namely `input.gem` (with "\t" or "," as delimiters).
-I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change.
-A simple example is shown below:
-
-|geneID|x|y|MIDCount|
-|-----|-----|-----|-----|
-|#gene1|23|36|1|
-|#gene1|24|35|1|
-|#gene1|23|30|1|
-|#gene2|20|31|1|
-|#gene2|21|22|1|
-
-
-### Output files
-SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
 
 
 ### List of Parameters
