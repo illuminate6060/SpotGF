@@ -67,7 +67,9 @@ new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold)
 
 
 ### Data preparation
-Sprod workflow requires two mandatory files, a `input.gem` (with "\t" or "," as the delimiter) for gene expression data,
+The SpotGF workflow requires only one mandatory file for the expression and position of each gene of the user's SRT data, namely `input.gem` (with "\t" or "," as delimiters).
+I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change.
+A simple example is shown below:
 
 |geneID|x|y|MIDCount|
 |-----|-----|-----|-----|
@@ -77,7 +79,6 @@ Sprod workflow requires two mandatory files, a `input.gem` (with "\t" or "," as 
 |#gene2|20|31|1|
 |#gene2|21|22|1|
 
-I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change
 
 ### Output files
 SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
