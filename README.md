@@ -16,7 +16,7 @@ We recommend using conda to manage the installation of all dependencies. To do t
 conda create --name SpotGF
 conda activate SpotGF
 # conda config --add channels conda-forge ##If you do not have this channel added before#
-conda install python=3.7 pandas pot=0.8.2 numpy scipy matplotlib descartes
+conda install python=3.8 pandas pot=0.8.2 numpy scipy matplotlib descartes
 ```
 Then, download this repo and install it.
 ```

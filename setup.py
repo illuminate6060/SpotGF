@@ -8,7 +8,7 @@ requires = ['numpy',
             'scipy',
             'descartes',
             'alphashape',
-            'shapely'
+            'shapely<2.0.0'
             ]
 
 setup(

@@ -275,7 +275,7 @@ class SpotGF():
             save_gene = GF_df[GF_df['SpotGF_score'] >= float(thred[1]) ]['geneID'].tolist()
             save = save_gene + gsave_high
             result = ex_raw[ex_raw.geneID.isin(save)]
-            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'], errors='ignore')
             result.to_csv('SpotGF_auto_threshold.gem','\t')
         if proportion is not None:
             print("Generate SpotGF-denoised data based on proportion")
@@ -284,7 +284,7 @@ class SpotGF():
             save_gene = list(save_pro.geneID) 
             save = save_gene + gsave_high
             result = ex_raw[ex_raw.geneID.isin(save)]
-            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'], errors='ignore')
             result.to_csv('SpotGF_proportion_'+str(proportion)+'.gem', sep='\t') 
             return result
 
