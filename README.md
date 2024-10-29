@@ -56,7 +56,7 @@ The `proportion` parameter determines the proportion of genes to be retained in 
 If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 ```
-python [path/to/SpotGF.py] [path/to/input.gem] [binsize] [proportion]
+python [path/to/SpotGF.py] [path/to/input.gem] [outpath] [binsize] [proportion]
 ```
 
 If you use SpotGF in Jupyter environment, you can choose blow Usage.
