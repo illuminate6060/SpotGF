@@ -6,16 +6,19 @@ import matplotlib.pyplot as plt
 import heapq
 import math
 import alphashape
-from descartes import PolygonPatch
 from shapely.geometry import Point
 from multiprocessing import Pool
 import argparse
 import csv
 import sys
 import os
+from scipy import sparse
+import anndata
+import scanpy as sc
+import seaborn as sns
 
 class SpotGF():
-    def __init__(self,gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath): 
+    def __init__(self,gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath,visualize,spot_size): 
         self.gem_path = gem_path
         self.binsize = binsize
         self.proportion = proportion
@@ -24,9 +27,29 @@ class SpotGF():
         self.upper = upper
         self.max_iterations = max_iterations
         self.outpath = outpath
+        self.visualize = visualize
+        self.spot_size = spot_size
         os.chdir(outpath)
-        print("input file:",gem_path)
-        print("output path:",outpath)
+        print("Input file:",gem_path)
+        print("Output path:",outpath)
+        print("Denoising resolution :",binsize)
+
+    def gem2adata(self,result):
+        result['x_y'] = result['x'].astype('str')+'_'+result['y'].astype('str')
+        result = result[['x_y', 'geneID', 'MIDCount']]
+        cell_list = result["x_y"].astype('category')
+        gene_list = result["geneID"].astype('category')
+        data =  result["MIDCount"].to_numpy()
+        row = cell_list.cat.codes.to_numpy()
+        col = gene_list.cat.codes.to_numpy()
+        obs = pd.DataFrame(index = cell_list.cat.categories)
+        var = pd.DataFrame(index = gene_list.cat.categories)
+        X = sparse.csr_matrix((data, (row, col)), shape = (len(obs), len(var)))
+        adata = anndata.AnnData(X, obs = obs, var = var)
+        adata.obsm['spatial'] = pd.Series(adata.obs.index).str.split('_', expand=True).astype(int).values
+        adata.obs['spatial1'] = adata.obsm['spatial'][:,1].astype('int64')
+        adata.obs['spatial2'] = adata.obsm['spatial'][:,0].astype('int64')
+        return adata
 
     def convert_x_y_to_numeric(self,df):
         """
@@ -71,10 +94,10 @@ class SpotGF():
         gsave = count[count > 10].index.tolist()
         ex_raw = ex_raw[ex_raw.geneID.isin(gsave)].reset_index(drop=True)
         all_gene = ex_raw['geneID'].unique()
-        print("Genes Number:",len(all_gene))
+        print("Valid genes Number:",len(all_gene))
         ex2 = ex_raw.groupby(['geneID','x','y'], as_index=False)['MIDCount'].sum()
         all_cell = ex_raw[['x', 'y']].drop_duplicates().values
-        print("Cells number:",len(all_cell)) 
+        print("Valid cells number:",len(all_cell)) 
         return ex2,all_cell,all_gene
 
     def grid_downsample(self,points, num_points, mask_area, alpha_shape):
@@ -167,23 +190,19 @@ class SpotGF():
     def calculate_GFscore(self,gem_path,binsize):
         """
         Calculate SpotGF scores for genes based on spatial expression data.
-        
         Parameters:
         - gem_path: Path to the GEM file.
         - binsize: Size of the bins for spatial binning.
-        
         Returns:
         - df: DataFrame containing genes and their corresponding SpotGF scores.
         """
-        print("Calculate SpotGF scores for genes with binsize ",binsize)
-
         ex_raw = self.open_gem(gem_path) 
         if binsize == 1:
-            print('Process with Cell Bin data')
+            print('Process with resolution cell bin data')
             ex_raw.rename(columns={'cen_y':'y'},inplace=True) #For cell-bin data
             ex_raw.rename(columns={'cen_x':'x'},inplace=True)
         else:
-            print('Process with Bin',str(binsize) ,'data')
+            print('Process with resolution binsize',str(binsize) ,'data')
             ex_raw['x'] = ex_raw['x'].map(lambda x: int(x/binsize))
             ex_raw['y'] =ex_raw['y'].map(lambda y: int(y/binsize))
         
@@ -248,16 +267,27 @@ class SpotGF():
         print('thred:', max_point)
         return max_point  # Return the threshold point
 
-    def generate_GFgem(self,gem_path,GF_df,proportion,auto_threshold):
+
+    def expression_figure(self,adata,save_path,spot_size):
+        if len(adata.var) > 200:
+            adata.var["mt"] = adata.var_names.str.startswith("MT")
+            sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"],percent_top=(50,100,200),inplace=True,log1p=True)
+            sc.pl.spatial(adata, color = 'total_counts', spot_size=spot_size,title='Total_counts', show=False, return_fig =True,color_map ='Spectral_r') 
+            plt.savefig(save_path, dpi=300)
+            plt.close()
+            return adata 
+        else:
+            print("Warning: Gene numbers below 200 cannot visualize denoised data")
+        
+
+    def generate_GFgem(self,gem_path,GF_df,proportion,auto_threshold,visualize,spot_size):
         """
         Generate a GEM file filtered by SpotGF scores.
-        
         Parameters:
         - ex_raw: Raw expression data.
         - SpotGF_scores: DataFrame containing genes and their SpotGF scores.
         - proportion: Proportion of top genes to save based on SpotGF scores.
         - auto_threshold: Boolean flag to determine whether to use automatic thresholding.
-        
         Returns:
         - result: Filtered expression data based on SpotGF scores.
         """
@@ -270,25 +300,68 @@ class SpotGF():
         emd2 = GF_df['SpotGF_score'].tolist()
 
         if auto_threshold == True:
-            print("Generate SpotGF-denoised data based on automatic threshold")
+            print("Generate and visualize SpotGF-denoised data based on automatic threshold")
             thred = self.cal_threshold(emd2)
             save_gene = GF_df[GF_df['SpotGF_score'] >= float(thred[1]) ]['geneID'].tolist()
             save = save_gene + gsave_high
             result = ex_raw[ex_raw.geneID.isin(save)]
-            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'], errors='ignore')
             result.to_csv('SpotGF_auto_threshold.gem','\t')
+            if visualize == True:
+                # print("Visualize SpotGF-denoised data based on automatic threshold")
+                #os.makedirs('automatic', exist_ok=True)
+                save_path = './automatic_threshold_spatial.png'
+                adata = self.gem2adata(result)
+                adata_auto = self.expression_figure(adata,save_path,spot_size)
+            
         if proportion is not None:
-            print("Generate SpotGF-denoised data based on proportion")
+            print("Generate and visualize SpotGF-denoised data based on proportion")
             drop_pre = int(len(GF_df) / 10  * proportion )
             save_pro = GF_df[GF_df['SpotGF_score'] >= heapq.nlargest(drop_pre,GF_df['SpotGF_score'])[-1]]
             save_gene = list(save_pro.geneID) 
             save = save_gene + gsave_high
             result = ex_raw[ex_raw.geneID.isin(save)]
-            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+            result = result.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'], errors='ignore')
             result.to_csv('SpotGF_proportion_'+str(proportion)+'.gem', sep='\t') 
-            return result
+            if visualize == True:
+                # print("Visualize SpotGF-denoised data based on proportion")
+                #os.makedirs('proportion', exist_ok=True)
+                save_path = './proportion_heatmap.png'
+                adata = self.gem2adata(result)
+                adata_prop = self.expression_figure(adata,save_path,spot_size)
+        
+        adata_raw = self.gem2adata(ex_raw)
+        adata_raw.var["mt"] = adata_raw.var_names.str.startswith("MT")
+        sc.pp.calculate_qc_metrics(adata_raw, qc_vars=["mt"],percent_top=(50,100,200),inplace=True,log1p=True)
+        df_raw = pd.DataFrame(adata_raw.obs)[['n_genes_by_counts', 'total_counts']]
+        df_raw['type'] = ['Raw'] * len(df_raw)
 
-
+        if auto_threshold == True:
+            df_auto = pd.DataFrame(adata_auto.obs)[['n_genes_by_counts', 'total_counts']]
+            df_auto['type'] = ['Auto_denoised'] * len(df_auto)
+            if proportion is not None:
+                df_prop= pd.DataFrame(adata_prop.obs)[['n_genes_by_counts', 'total_counts']]
+                df_prop['type'] = ['Prop_denoised'] * len(df_prop)
+                df_all = pd.concat([df_raw,df_auto,df_prop])
+            else:
+                df_all = pd.concat([df_raw,df_auto])
+            save_path = "violinplot_total_counts.png"
+            plt.figure(dpi=300, figsize=(5,10))
+            sns.violinplot(data=df_all, x='type',y='total_counts',linewidth=1,inner='box', palette = "Set3", hue='type', legend=False)   
+            plt.title('Violin Plot of Total Counts by Type', fontsize=14)    
+            plt.xticks(rotation=90)
+            plt.tight_layout()
+            plt.savefig(save_path, dpi=300)
+            plt.close()
+            save_path = "violinplot_n_genes_by_counts.png"
+            plt.figure(dpi=300, figsize=(5,10))
+            g = sns.violinplot(data=df_all, x='type',y='n_genes_by_counts',linewidth=1,inner='box', palette="Set3", hue='type', legend=False)   
+            plt.title('Violin Plot of n_genes_by_counts', fontsize=14)    
+            plt.xticks(rotation=90)
+            plt.tight_layout()  
+            plt.savefig(save_path, dpi=300)
+            plt.close()  
+        return result
 
 if __name__ == '__main__':
     '''
@@ -303,24 +376,28 @@ if __name__ == '__main__':
     '''
     parser = argparse.ArgumentParser(description='SpotGF')
     parser.add_argument('-i', '--arg1', type=str, help='input gem file path')
-    parser.add_argument('-b', '--arg2', type=int, help='Denoising resolution binsize', default=5)
-    parser.add_argument('-lower', '--arg3', type=float, help='lower limit for tissue structures capturing optimization', default=0)
-    parser.add_argument('-upper', '--arg4', type=float, help='upper limit for tissue structures capturing optimization', default=sys.float_info.max)
-    parser.add_argument('-max_iterations', '--arg5', type=int, help='maximum number of iterations when capturing tissue structures', default=10000)
-    parser.add_argument('-p', '--arg6', type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5)
-    parser.add_argument('-auto_threshold', '--arg7', type=bool, help='automatic threshold', default=True)
-    parser.add_argument('-o', '--arg8', type=str, help='outpath for saving results')
+    parser.add_argument('-o', '--arg2', type=str, help='outpath for saving results')
+    parser.add_argument('-b', '--arg3', type=int, help='Denoising resolution binsize', default=5)
+    parser.add_argument('-lower', '--arg4', type=float, help='lower limit for tissue structures capturing optimization', default=0)
+    parser.add_argument('-upper', '--arg5', type=float, help='upper limit for tissue structures capturing optimization', default=sys.float_info.max)
+    parser.add_argument('-max_iterations', '--arg6', type=int, help='maximum number of iterations when capturing tissue structures', default=10000)
+    parser.add_argument('-p', '--arg7', type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5)
+    parser.add_argument('-auto_threshold', '--arg8', type=bool, help='Automatic threshold', default=True)
+    parser.add_argument('-v', '--arg9', type=bool, help='Visualize SpotGF-denoised data', default=True)
+    parser.add_argument('-s', '--arg10', type=str, help='Spot size for visualize SpotGF-denoised data', default=50)
     args = parser.parse_args()
 
     gem_path = args.arg1
-    binsize = args.arg2
-    lower = args.arg3
-    upper = args.arg4
-    max_iterations = args.arg5
-    proportion = args.arg6
-    auto_threshold = args.arg7
-    outpath = args.arg8
+    outpath = args.arg2
+    binsize = args.arg3
+    lower = args.arg4
+    upper = args.arg5
+    max_iterations = args.arg6
+    proportion = args.arg7
+    auto_threshold = args.arg8
+    visualize = args.arg9
+    spot_size = args.arg10
 
-    spotgf = SpotGF(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath)
+    spotgf = SpotGF(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath,visualize,spot_size)
     GF_df = spotgf.calculate_GFscore(gem_path,binsize)
-    new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold )
+    new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold,visualize,spot_size)

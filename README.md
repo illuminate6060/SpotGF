@@ -2,12 +2,7 @@
 SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
 https://doi.org/10.1016/j.cels.2024.09.005
 
-Preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
-
-
-![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/07108fa9-3784-4aa9-a2dd-1d23041a88dc)
-
-
+preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
 
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
@@ -21,29 +16,11 @@ conda install python=3.7 pandas pot=0.8.2 numpy scipy matplotlib descartes
 Then, download this repo and install it.
 ```
 git clone [repo_path]
-cd [path/to/SpotGF-main]
+cd [path/to/sprod]
 pip install .
 ```
 
 The total installation time is around 10 mintunes. If error occuors, please upgrade pip and try again.
-
-
-## Data preparation
-The SpotGF workflow requires only one mandatory file for the expression and position of each gene of the user's SRT data, namely `input.gem` (with "\t" or "," as delimiters).
-I also have compiled some data format conversion codes to facilitate users of SpotGF：https://github.com/illuminate6060/SpotGF_data_form_change.
-A simple example is shown below:
-
-|geneID|x|y|MIDCount|
-|-----|-----|-----|-----|
-|#gene1|23|36|1|
-|#gene1|24|35|1|
-|#gene1|23|30|1|
-|#gene2|20|31|1|
-|#gene2|21|22|1|
-
-
-## Output files
-SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
 
 
 ## Usage
@@ -56,7 +33,7 @@ The `proportion` parameter determines the proportion of genes to be retained in 
 If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 ```
-python [path/to/SpotGF.py] [path/to/input.gem] [outpath] [binsize] [proportion]
+python [path/to/SpotGF.py] [path/to/input.gem] [binsize] [proportion]
 ```
 
 If you use SpotGF in Jupyter environment, you can choose blow Usage.
@@ -84,6 +61,22 @@ new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold)
 ```
 
 
+### Data preparation
+Sprod workflow requires two mandatory files, a `input.gem` (with "\t" or "," as the delimiter) for gene expression data,
+
+|geneID|x|y|MIDCount|
+|-----|-----|-----|-----|
+|#gene1|23|36|1|
+|#gene1|24|35|1|
+|#gene1|23|30|1|
+|#gene2|20|31|1|
+|#gene2|21|22|1|
+
+
+### Output files
+SpotGF_scores.txt: This file contains the SpotGF scores for each gene. The SpotGF score indicates the degree of clustering or diffusion of a gene. A smaller SpotGF score suggests that the gene is more diffuse, while a larger SpotGF score indicates that the gene is more clustered.
+
+
 ### List of Parameters
 ```
 positional arguments:
@@ -103,7 +96,7 @@ positional arguments:
   p            Proportion of gene numbers, must float type [0,1], default=0.6.
 
   auto_threshold            if True, return a denoised gem file using automatic threshold, default=True.
-```
+
 
 ### Contact Us
 If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
@@ -111,5 +104,5 @@ If you have any suggestions/ideas for SpotGF or are having issues trying to use 
 Lin Du, dulin[dot]@genomics[dot]cn 
 
 
-### Cite
+##Cite
 Du, L., Kang, J., Hou, Y., Sun, H. X., & Zhang, B. (2024). SpotGF: Denoising spatially resolved transcriptomics data using an optimal transport-based gene filtering algorithm. Cell systems, 15(10), 969–981.e6. https://doi.org/10.1016/j.cels.2024.09.005
