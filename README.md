@@ -4,6 +4,9 @@ https://doi.org/10.1016/j.cels.2024.09.005
 
 preprint paper:Optimal Transport Method-Based Gene Filter (GF) Denoising Algorithm for Enhancing Spatially Resolved Transcriptomics Data
 
+![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/fb899aff-2233-4b43-b63a-57b00e41cb1a)
+
+
 ## Installation
 We recommend using conda to manage the installation of all dependencies. To do this, simply run:
 
