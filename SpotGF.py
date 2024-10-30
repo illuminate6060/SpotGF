@@ -326,7 +326,7 @@ class SpotGF():
             if visualize == True:
                 # print("Visualize SpotGF-denoised data based on proportion")
                 #os.makedirs('proportion', exist_ok=True)
-                save_path = './proportion_heatmap.png'
+                save_path = './proportion_spatial.png'
                 adata = self.gem2adata(result)
                 adata_prop = self.expression_figure(adata,save_path,spot_size)
         
