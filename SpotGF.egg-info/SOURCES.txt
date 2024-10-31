@@ -1,7 +1,0 @@
-README.md
-setup.py
-SpotGF.egg-info/PKG-INFO
-SpotGF.egg-info/SOURCES.txt
-SpotGF.egg-info/dependency_links.txt
-SpotGF.egg-info/requires.txt
-SpotGF.egg-info/top_level.txt
