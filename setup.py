@@ -23,5 +23,5 @@ setup(
       long_description=open('README.md').read(),
       packages=find_packages(), 
       install_requires = requires,
-      python_requires = '>=3'
+      python_requires = '>=3.7'
 )
