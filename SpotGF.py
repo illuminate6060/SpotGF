@@ -418,7 +418,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--arg7', type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5)
     parser.add_argument('-auto_threshold', '--arg8', type=bool, help='Automatic threshold', default=True)
     parser.add_argument('-v', '--arg9', type=bool, help='Visualize SpotGF-denoised data', default=True)
-    parser.add_argument('-s', '--arg10', type=int, help='Spot size for visualize SpotGF-denoised data', default=20)
+    parser.add_argument('-s', '--arg10', type=int, help='Spot size for visualize SpotGF-denoised data', default=5)
     parser.add_argument('-a', '--arg11', type=float, help='Alpha for counter detection,default use auto optimizealpha', default=0 )
     args = parser.parse_args()
 
