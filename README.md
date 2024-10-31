@@ -104,6 +104,7 @@ SpotGF workflow requires two mandatory files, a `input.gem` (with "\t" or "," as
 
 
 ### List of Parameters
+```
 positional arguments:
 
   -i                Input SRT data files path.
@@ -126,13 +127,14 @@ positional arguments:
 
   -s                Spot size used for spatial expression figure, default=5.
 
-  -a                Alpha for counter detection,default use auto optimizealpha, default=0.
+  -a                Alpha for tissue boundary detection, default use auto optimizealpha, default=0.
+```
 
 ### Contact Us
 If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
 
-Lin Du, dulin.@genomics.cn 
+Lin Du, dulin@genomics.cn 
 
 
-##Cite
+### Cite
 Du, L., Kang, J., Hou, Y., Sun, H. X., & Zhang, B. (2024). SpotGF: Denoising spatially resolved transcriptomics data using an optimal transport-based gene filtering algorithm. Cell systems, 15(10), 969–981.e6. https://doi.org/10.1016/j.cels.2024.09.005
