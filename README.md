@@ -104,7 +104,6 @@ SpotGF workflow requires two mandatory files, a `input.gem` (with "\t" or "," as
 
 
 ### List of Parameters
-```
 positional arguments:
 
   -i                Input SRT data files path.
@@ -128,7 +127,6 @@ positional arguments:
   -s                Spot size used for spatial expression figure, default=5.
 
   -a                Alpha for counter detection,default use auto optimizealpha, default=0.
-'''
 
 ### Contact Us
 If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
