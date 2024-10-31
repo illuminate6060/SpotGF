@@ -31,16 +31,17 @@ The total installation time is around 5 mintunes. If error occuors, please upgra
 ## Usage
 Once the input data have been processed into the supported format, the full SpotGF workflow can be run by calling the `SpotGF.py` script. The input files can include various formats such as `gem`, `txt`, `csv`, `gem.gz`and others, containing the raw SRT data information. These files must contain specific columns including `geneID`, `x`, `y`, `MIDCount`. 
 
-The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time.Please note that the `binsize` parameter is only used when calculating SpotGF scores and it does not affect the final denoised data.
+The denoising resolution can be adjusted using the `binsize` parameter. A smaller `binsize` will result in a finer denoising effect but will also increase the processing time.Please note that the `binsize` parameter is only used when calculating SpotGF scores and it does not affect the final denoised data. 
+
+If the input file contains columns named ‘cen_x’ and ‘cen_y’, the denoising process can be performed based on the cell bin data, achieving denoising at the single-cell level by setting ‘binsize = 1’ or ‘-b 1’.
 
 The `proportion` parameter determines the proportion of genes to be retained in the final denoised data. For example, setting proportion=0.9 will retain only 90% of the effective genes, resulting in a new denoised SRT dataset. 
 
-If the input file contains columns named `cen_x` and `cen_y`, the denoising process can be performed based on the cell bin, achieving denoising at the single-cell level by setting binsize=1. Please note that the above description provides an overview of the functionality and parameters. Let me know if there is anything else I can help you with.
 
 ```
-python [path/to/SpotGF.py] -i [path/to/input.gem] -b [binsize] -p [proportion] -s [spotsize]
+#python [path/to/SpotGF.py] -i [path/to/input.gem] -b [binsize] -p [proportion] -s [spotsize]
 
-cd test
+cd /path/test
 
 python ../SpotGF.py -i ./demo.gem -o ./result -b 70 -p 0.5 -s 5
 ```
@@ -92,7 +93,7 @@ SpotGF workflow requires two mandatory files, a `input.gem` (with "\t" or "," as
 
 "SpotGF_auto_threshold.gem": Gene expression matrix file after denoising based on an automatic filtering threshold method.
 
-"alpha_shape.png": Recognition results of tissue contours, with special attention to the fact that a highly detailed outline is not required; only a rough outline is needed.
+"alpha_shape.png": It shows the tissue contour used by SpotGF during the denoising process, with special attention to the fact that a highly detailed outline is not required; only a rough outline is needed.
 
 "Spatial_automatic.png": Spatial expression levels of data after denoising based on an automatic filtering threshold method.
 
