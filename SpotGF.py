@@ -126,7 +126,8 @@ class SpotGF():
         cols = ((points[:, 0] - min_x) / bin_size).astype(int)
         rows = ((points[:, 1] - min_y) / bin_size).astype(int)
         for col, row in zip(cols, rows):
-            grid[row, col] += 1
+            if 0 <= col < num_cols and 0 <= row < num_rows:
+                grid[row, col] += 1
         
         # Select points from the grid
         output_points = []
