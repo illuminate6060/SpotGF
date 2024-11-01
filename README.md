@@ -112,7 +112,7 @@ positional arguments:
 
   -o                Outpath for saving results.
     
-  -b                Denoising resolution binsize, must int type, default=5.
+  -b                Denoising resolution binsize, must int type, default=10.
 
   -lower            Lower limit for tissue structures capturing optimization, default=0.
 
