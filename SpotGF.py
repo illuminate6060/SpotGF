@@ -434,7 +434,8 @@ if __name__ == '__main__':
     visualize = args.arg9
     spot_size = args.arg10
     alpha = args.arg11
-
+    
+    os.makedirs(outpath, exist_ok=True)
     spotgf = SpotGF(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath,visualize,spot_size,alpha)
     GF_df = spotgf.calculate_GFscore(gem_path,binsize,alpha)
     new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold,visualize,spot_size)
