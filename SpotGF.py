@@ -189,7 +189,7 @@ class SpotGF():
         result = np.array([gene,emd])
         return result
         
-    def calculate_GFscore(self,gem_path,binsize,alpha):
+    def calculate_GFscore(self,gem_path,binsize,alpha,max_iterations,lower,upper):
         """
         Calculate SpotGF scores for genes based on spatial expression data.
 
@@ -215,7 +215,7 @@ class SpotGF():
 
         # decide alpha value
         if alpha == 0:
-            alpha_use = alphashape.optimizealpha(all_cell)
+            alpha_use = alphashape.optimizealpha(all_cell,max_iterations,lower,upper)
         else:
             alpha_use = alpha
         alpha_shape = alphashape.alphashape(all_cell, alpha_use)
@@ -295,7 +295,6 @@ class SpotGF():
         print('thred:', max_point)
         return max_point  # Return the threshold point
 
-
     def expression_figure(self,adata,save_path,spot_size):
         if len(adata.var) > 200:
             adata.var["mt"] = adata.var_names.str.startswith("MT")
@@ -307,7 +306,6 @@ class SpotGF():
         else:
             print("Warning: Gene numbers below 200 cannot visualize denoised data")
         
-
     def generate_GFgem(self,gem_path,GF_df,proportion,auto_threshold,visualize,spot_size):
         """
         Generate a gem file filtered by SpotGF scores.
@@ -419,7 +417,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--arg7', type=float, help='Proportion of matained genes, must float type [0,1]', default=0.5)
     parser.add_argument('-auto_threshold', '--arg8', type=bool, help='Automatic threshold', default=True)
     parser.add_argument('-v', '--arg9', type=bool, help='Visualize SpotGF-denoised data', default=True)
-    parser.add_argument('-s', '--arg10', type=int, help='Spot size for visualize SpotGF-denoised data', default=10)
+    parser.add_argument('-s', '--arg10', type=int, help='Spot size for visualize SpotGF-denoised data', default=5)
     parser.add_argument('-a', '--arg11', type=float, help='Alpha for counter detection,default use auto optimizealpha', default=0 )
     args = parser.parse_args()
 
@@ -437,5 +435,5 @@ if __name__ == '__main__':
     
     os.makedirs(outpath, exist_ok=True)
     spotgf = SpotGF(gem_path,binsize,proportion,auto_threshold,lower,upper,max_iterations,outpath,visualize,spot_size,alpha)
-    GF_df = spotgf.calculate_GFscore(gem_path,binsize,alpha)
+    GF_df = spotgf.calculate_GFscore(gem_path,binsize,alpha,max_iterations,lower,upper)
     new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold,visualize,spot_size)
