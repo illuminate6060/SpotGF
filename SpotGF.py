@@ -404,7 +404,7 @@ if __name__ == '__main__':
     auto_threshold(bool): Generate SpotGF-denoised data based on automatic threshold,default = True
     lower (float): lower limit for tissue structures capturing optimization , default = 0
     upper (float): upper limit for tissue structures capturing optimization , default = sys.float_info.max
-    auto_threshold (bool): maximum number of iterations when capturing finding tissue structures
+    max_iterations (bool): maximum number of iterations when capturing finding tissue structures
     visualize (bool): Visualize SpotGF-denoised data
     spot siz (int): Spot size for visualize SpotGF-denoised data
     alpha (float): Alpha for counter detection,default use auto optimizealpha
