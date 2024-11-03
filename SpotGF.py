@@ -295,16 +295,27 @@ class SpotGF():
         print('thred:', max_point)
         return max_point  # Return the threshold point
 
-    def expression_figure(self,adata,save_path,spot_size):
+    def expression_figure(adata,save_path,spot_size):
         if len(adata.var) > 200:
             adata.var["mt"] = adata.var_names.str.startswith("MT")
             sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"],percent_top=(50,100,200),inplace=True,log1p=True)
             sc.pl.spatial(adata, color = 'total_counts', spot_size=spot_size,title='Total_counts', show=False, return_fig =True,color_map ='Spectral_r') 
+            ax = plt.gca()
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            # ax.spines['left'].set_visible(False)
+            # ax.spines['bottom'].set_visible(False)
+            ax.tick_params(axis='x', labelsize=20)
+            ax.tick_params(axis='y', labelsize=20)
+            ax.tick_params(width=3) 
+            ax.spines['left'].set_linewidth(3) 
+            ax.spines['bottom'].set_linewidth(3) 
             plt.savefig(save_path, dpi=300)
             plt.close()
             return adata 
         else:
             print("Warning: Gene numbers below 200 cannot visualize denoised data")
+
         
     def generate_GFgem(self,gem_path,GF_df,proportion,auto_threshold,visualize,spot_size):
         """
