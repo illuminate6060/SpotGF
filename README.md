@@ -79,11 +79,11 @@ SpotGF workflow requires two mandatory files, a `input.gem` (with "\t" or "," as
 
 |geneID|x|y|MIDCount|
 |-----|-----|-----|-----|
-|#gene1|23|36|1|
-|#gene1|24|35|1|
-|#gene1|23|30|1|
-|#gene2|20|31|1|
-|#gene2|21|22|1|
+|#gene1|23|36|  1|
+|#gene1|24|35|  1|
+|#gene1|23|30|  1|
+|#gene2|20|31|  1|
+|#gene2|21|22|  1|
 
 
 ### Output files
