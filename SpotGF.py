@@ -421,7 +421,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='SpotGF')
     parser.add_argument('-i', '--arg1', type=str, help='input gem file path')
     parser.add_argument('-o', '--arg2', type=str, help='outpath for saving results')
-    parser.add_argument('-b', '--arg3', type=int, help='Denoising resolution binsize', default=5)
+    parser.add_argument('-b', '--arg3', type=int, help='Denoising resolution binsize', default=10)
     parser.add_argument('-lower', '--arg4', type=float, help='lower limit for tissue structures capturing optimization', default=0)
     parser.add_argument('-upper', '--arg5', type=float, help='upper limit for tissue structures capturing optimization', default=sys.float_info.max)
     parser.add_argument('-max_iterations', '--arg6', type=int, help='maximum number of iterations when capturing tissue structures', default=10000)
