@@ -295,7 +295,7 @@ class SpotGF():
         print('thred:', max_point)
         return max_point  # Return the threshold point
 
-    def expression_figure(adata,save_path,spot_size):
+    def expression_figure(self,adata,save_path,spot_size):
         if len(adata.var) > 200:
             adata.var["mt"] = adata.var_names.str.startswith("MT")
             sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"],percent_top=(50,100,200),inplace=True,log1p=True)
