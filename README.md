@@ -75,7 +75,7 @@ new_gem  = spotgf.generate_GFgem(gem_path,GF_df,proportion,auto_threshold,visual
 
 
 ### Data preparation
-SpotGF workflow requires two mandatory files, a `input.gem` (with "\t" or "," as the delimiter) for gene expression data,
+SpotGF workflow requires one mandatory files, a `input.gem` (with "\t" or "," as the delimiter) for gene expression data,
 
 |geneID|x|y|MIDCount|
 |-----|-----|-----|-----|
