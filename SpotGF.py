@@ -357,7 +357,7 @@ class SpotGF():
             
         if proportion is not None:
             print("Generate and visualize SpotGF-denoised data based on proportion")
-            drop_pre = int(len(GF_df) / 10  * proportion )
+            drop_pre = int(len(GF_df)  * proportion )
             save_pro = GF_df[GF_df['SpotGF_score'] >= heapq.nlargest(drop_pre,GF_df['SpotGF_score'])[-1]]
             save_gene = list(save_pro.geneID) 
             save = save_gene + gsave_high
