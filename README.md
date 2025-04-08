@@ -2,7 +2,8 @@
 SpotGF: Denoising Spatially Resolved Transcriptomics Data Using an Optimal Transport-Based Gene Filtering Algorithm
 https://doi.org/10.1016/j.cels.2024.09.005
 
-Protocol paper:Protocol to denoise spatially resolvedtranscriptomics data utilizing optimaltransport-based gene filtering algorithm
+Protocol paper: Protocol to denoise spatially resolvedtranscriptomics data utilizing optimaltransport-based gene filtering algorithm
+https://doi.org/10.1016/j.xpro.2025.103625
 
 ![GRAPHICAL ABSTRACT_revised](https://github.com/user-attachments/assets/d1e78bc1-85d0-4e06-85be-28da83cbb0e2)
 
@@ -134,9 +135,10 @@ positional arguments:
 ### Contact Us
 If you have any suggestions/ideas for SpotGF or are having issues trying to use it, please don't hesitate to reach out to us.
 
-Lin Du, dulin@genomics.cn 
+Lin Du, dulin@genomics.cn, 3051095449@qq.com
 
 
 ### Cite
 Du, L., Kang, J., Hou, Y., Sun, H. X., & Zhang, B. (2024). SpotGF: Denoising spatially resolved transcriptomics data using an optimal transport-based gene filtering algorithm. Cell systems, 15(10), 969–981.e6. https://doi.org/10.1016/j.cels.2024.09.005
-Du L, Kang J, Li J, Qin H, Hou Y, Sun HX. Protocol to denoise spatially resolved transcriptomics data utilizing optimal transport-based gene filtering algorithm. STAR Protoc. 2025 Mar 21;6(1):103625. doi: 10.1016/j.xpro.2025.103625. Epub 2025 Feb 4. PMID: 39913289; PMCID: PMC11847294.
+
+Du, L., Kang, J., Li, J., Qin, H., Hou, Y., & Sun, H. X. (2025). Protocol to denoise spatially resolved transcriptomics data utilizing optimal transport-based gene filtering algorithm. STAR protocols, 6(1), 103625. https://doi.org/10.1016/j.xpro.2025.103625
